@@ -1,0 +1,128 @@
+openapi: 3.0.1
+info:
+  title: Meeting Room API
+  version: 1.0.0
+tags:
+  - name: Booking
+    description: Booking stuff
+  - name: Room
+    description: Room stuff
+paths:
+  /api/rooms:
+    get:
+      summary: Listázza a tárgyalókat
+      tags: 
+        - Room
+      operationId: getRooms
+      responses:
+        '200':
+          description: Tárgyalók listája
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MeetingRoom'
+
+  /api/admin/bookings:
+    get:
+      summary: Listázza a foglalásokat
+      tags: 
+        - Booking
+      operationId: bookings
+      parameters:
+        - in: query
+          name: roomId
+          schema:
+            type: integer
+          required: false
+          description: Szűrés tárgyaló szerint
+      responses:
+        '200':
+          description: Foglalások listája
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookingDto'
+  
+  /api/bookings/add:
+    post:
+      summary: Új foglalás létrehozása
+      tags: 
+        - Booking
+      operationId: createBooking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingRequest'
+      responses:
+        '200':
+          description: A létrehozott foglalás
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingDto'
+
+  /api/bookings/{id}:
+    delete:
+      summary: Foglalás törlése
+      tags:
+        - Booking
+      operationId: deleteBooking
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '204':
+          description: Sikeres törlés
+
+components:
+  schemas:
+    MeetingRoom:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+      required:
+        - id
+        - name
+    BookingDto:
+      type: object
+      properties:
+        id:
+          type: integer
+        roomId:
+          type: integer
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+      required:
+        - roomId
+        - startTime
+        - endTime
+    BookingRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+        roomId:
+          type: integer
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time

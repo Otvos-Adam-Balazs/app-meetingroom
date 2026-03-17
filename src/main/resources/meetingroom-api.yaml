@@ -35,7 +35,7 @@ paths:
           name: roomId
           schema:
             type: integer
-          required: false
+          required: true
           description: Szűrés tárgyaló szerint
       responses:
         '200':

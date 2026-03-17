@@ -15,10 +15,9 @@ public class SecurityConfig {
     http
         .csrf(csrf -> csrf.disable()) // CSRF tiltása REST API-hoz
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // Swagger publikusan
-            .requestMatchers("/api/**").permitAll() // Publikus REST API
-            .anyRequest().authenticated() // minden más endpoint autentikációt igényel
-        );
+            .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
+            .requestMatchers("/api/**").permitAll()
+            .anyRequest().authenticated());
 
     return http.build();
   }

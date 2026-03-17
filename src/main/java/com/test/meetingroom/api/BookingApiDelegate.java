@@ -29,7 +29,7 @@ public interface BookingApiDelegate {
     /**
      * GET /api/admin/bookings : Listázza a foglalásokat
      *
-     * @param roomId Szűrés tárgyaló szerint (optional)
+     * @param roomId Szűrés tárgyaló szerint (required)
      * @return Foglalások listája (status code 200)
      * @see BookingApi#bookings
      */

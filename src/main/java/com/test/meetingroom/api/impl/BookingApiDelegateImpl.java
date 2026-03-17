@@ -2,6 +2,7 @@ package com.test.meetingroom.api.impl;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.test.meetingroom.api.BookingApiDelegate;
@@ -17,19 +18,20 @@ public class BookingApiDelegateImpl implements BookingApiDelegate {
 
   @Override
   public ResponseEntity<List<BookingDto>> bookings(Integer roomId) {
-    return ResponseEntity.ok(bookingService.bookings(roomId));
+    List<BookingDto> bookings = bookingService.bookings(roomId);
+    return ResponseEntity.ok(bookings);
   }
 
   @Override
   public ResponseEntity<BookingDto> createBooking(BookingRequest bookingRequest) {
-    // TODO Auto-generated method stub
-    return ResponseEntity.ok(bookingService.createBooking(bookingRequest));
+    BookingDto booking = bookingService.createBooking(bookingRequest);
+    return ResponseEntity.status(HttpStatus.CREATED).body(booking);
   }
 
   @Override
   public ResponseEntity<Void> deleteBooking(Integer bookingId) {
-    // TODO Auto-generated method stub
-    return BookingApiDelegate.super.deleteBooking(bookingId);
+    bookingService.deleteBooking(bookingId);
+    return ResponseEntity.noContent().build();
   }
 
 

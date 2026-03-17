@@ -41,7 +41,7 @@ public interface BookingApi {
     /**
      * GET /api/admin/bookings : Listázza a foglalásokat
      *
-     * @param roomId Szűrés tárgyaló szerint (optional)
+     * @param roomId Szűrés tárgyaló szerint (required)
      * @return Foglalások listája (status code 200)
      */
     @Operation(
@@ -60,7 +60,7 @@ public interface BookingApi {
         produces = { "application/json" }
     )
     default ResponseEntity<List<BookingDto>> bookings(
-        @Parameter(name = "roomId", description = "Szűrés tárgyaló szerint", in = ParameterIn.QUERY) @Valid @RequestParam(value = "roomId", required = false) Integer roomId
+        @NotNull @Parameter(name = "roomId", description = "Szűrés tárgyaló szerint", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "roomId", required = true) Integer roomId
     ) {
         return getDelegate().bookings(roomId);
     }

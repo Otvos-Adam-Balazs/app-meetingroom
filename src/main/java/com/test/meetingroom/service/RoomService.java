@@ -3,8 +3,8 @@ package com.test.meetingroom.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import com.test.meetingroom.api.exception.MeetingRoomNotFoundException;
 import com.test.meetingroom.entity.MeetingRoom;
-import com.test.meetingroom.exception.MeetingRoomNotFoundException;
 import com.test.meetingroom.repository.MeetingRoomRepository;
 
 @Service

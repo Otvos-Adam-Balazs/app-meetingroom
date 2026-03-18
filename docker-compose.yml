@@ -1,6 +1,6 @@
 
 services:
-  app:
+   meetingroom-app:
     build: .
     container_name: meetingroom-app
     ports:

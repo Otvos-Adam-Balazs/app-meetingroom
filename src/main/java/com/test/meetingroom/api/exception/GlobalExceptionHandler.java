@@ -1,4 +1,4 @@
-package com.test.meetingroom.exception;
+package com.test.meetingroom.api.exception;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,6 +8,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 import com.test.meetingroom.model.ErrorResponse;
 import com.test.meetingroom.model.ValidationError;
 
@@ -19,6 +20,14 @@ public class GlobalExceptionHandler {
     return ResponseEntity
         .status(HttpStatus.BAD_REQUEST)
         .body(new ErrorResponse("BOOKING_DATA_ERROR", ex.getMessage()));
+  }
+
+  @ExceptionHandler(NullPointerException.class)
+  public ResponseEntity<ErrorResponse> nullPointerException(final NullPointerException e,
+      final WebRequest request) {
+
+    return ResponseEntity.internalServerError()
+        .body(new ErrorResponse("something went wrong!", e.getMessage()));
   }
 
   @ExceptionHandler(HttpMessageNotReadableException.class)

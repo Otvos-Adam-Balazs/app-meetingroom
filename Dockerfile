@@ -6,4 +6,4 @@ COPY target/*.jar meetingroom-0.0.1-SNAPSHOT.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "meetingroom-0.0.1-SNAPSHOT.jar"]

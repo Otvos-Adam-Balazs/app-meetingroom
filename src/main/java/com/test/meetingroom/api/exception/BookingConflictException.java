@@ -1,4 +1,4 @@
-package com.test.meetingroom.exception;
+package com.test.meetingroom.api.exception;
 
 public class BookingConflictException extends RuntimeException {
 

@@ -1,12 +1,13 @@
 package com.test.meetingroom.service;
 
 import java.util.List;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.test.meetingroom.api.exception.BookingConflictException;
+import com.test.meetingroom.api.exception.BookingDataException;
 import com.test.meetingroom.entity.Booking;
 import com.test.meetingroom.entity.MeetingRoom;
-import com.test.meetingroom.exception.BookingConflictException;
-import com.test.meetingroom.exception.BookingDataException;
 import com.test.meetingroom.model.BookingRequest;
 import com.test.meetingroom.repository.BookingRepository;
 
@@ -21,6 +22,11 @@ public class BookingService {
   public BookingService() {}
 
   public Booking createBooking(BookingRequest bookingRequest) {
+
+    Objects.requireNonNull(bookingRequest, "bookingRequest cant be null!");
+    Objects.requireNonNull(bookingRequest.getRoomId(), "roomId cant be null!");
+    Objects.requireNonNull(bookingRequest.getStartTime(), "startTime cant be null!");
+    Objects.requireNonNull(bookingRequest.getEndTime(), "endTime cant be null!");
 
     if (bookingRequest.getStartTime().isEqual(bookingRequest.getEndTime())) {
       throw new BookingDataException("Start and end time cannot be the same");
@@ -46,6 +52,7 @@ public class BookingService {
   }
 
   public void deleteBooking(Integer bookingId) {
+    Objects.requireNonNull(bookingId, "bookingId cant be null!");
     repository.deleteById(bookingId);
   }
 

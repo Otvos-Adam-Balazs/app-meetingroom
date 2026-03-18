@@ -2,6 +2,9 @@ package com.test.meetingroom.api;
 
 import com.test.meetingroom.model.BookingDto;
 import com.test.meetingroom.model.BookingRequest;
+import com.test.meetingroom.model.CreateBooking400Response;
+import com.test.meetingroom.model.ErrorResponse;
+import com.test.meetingroom.model.ValidationError;
 
 
 import org.springframework.beans.factory.annotation.Autowired;

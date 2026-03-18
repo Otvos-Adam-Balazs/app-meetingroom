@@ -14,29 +14,29 @@ import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
- * MeetingRoom
+ * MeetingRoomDto
  */
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
-public class MeetingRoom {
+public class MeetingRoomDto {
 
   private Integer id;
 
   private String name;
 
-  public MeetingRoom() {
+  public MeetingRoomDto() {
     super();
   }
 
   /**
    * Constructor with only required parameters
    */
-  public MeetingRoom(Integer id, String name) {
+  public MeetingRoomDto(Integer id, String name) {
     this.id = id;
     this.name = name;
   }
 
-  public MeetingRoom id(Integer id) {
+  public MeetingRoomDto id(Integer id) {
     this.id = id;
     return this;
   }
@@ -56,7 +56,7 @@ public class MeetingRoom {
     this.id = id;
   }
 
-  public MeetingRoom name(String name) {
+  public MeetingRoomDto name(String name) {
     this.name = name;
     return this;
   }
@@ -84,9 +84,9 @@ public class MeetingRoom {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    MeetingRoom meetingRoom = (MeetingRoom) o;
-    return Objects.equals(this.id, meetingRoom.id) &&
-        Objects.equals(this.name, meetingRoom.name);
+    MeetingRoomDto meetingRoomDto = (MeetingRoomDto) o;
+    return Objects.equals(this.id, meetingRoomDto.id) &&
+        Objects.equals(this.name, meetingRoomDto.name);
   }
 
   @Override
@@ -97,7 +97,7 @@ public class MeetingRoom {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class MeetingRoom {\n");
+    sb.append("class MeetingRoomDto {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("}");

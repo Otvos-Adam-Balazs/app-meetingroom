@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
@@ -18,9 +20,10 @@ public class Booking {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
+  @ManyToOne
+  @JoinColumn(name = "room_id", nullable = false)
   @NotNull
-  @Column(nullable = false)
-  private Integer roomId;
+  private MeetingRoom room;
 
   @NotNull
   @Column(nullable = false)
@@ -34,24 +37,23 @@ public class Booking {
 
   public Booking() {}
 
-  public Booking(Integer roomId, OffsetDateTime startTime, OffsetDateTime endTime) {
-    this.roomId = roomId;
+  public Booking(MeetingRoom room, OffsetDateTime startTime, OffsetDateTime endTime) {
+    this.room = room;
     this.startTime = startTime;
     this.endTime = endTime;
   }
 
-  // GETTERS & SETTERS
 
   public Integer getId() {
     return id;
   }
 
-  public Integer getRoomId() {
-    return roomId;
+  public MeetingRoom getRoom() {
+    return room;
   }
 
-  public void setRoomId(Integer roomId) {
-    this.roomId = roomId;
+  public void setRoom(MeetingRoom room) {
+    this.room = room;
   }
 
   public OffsetDateTime getStartTime() {

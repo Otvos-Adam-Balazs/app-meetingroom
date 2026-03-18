@@ -7,4 +7,7 @@ src/main/java/com/test/meetingroom/api/RoomApiController.java
 src/main/java/com/test/meetingroom/api/RoomApiDelegate.java
 src/main/java/com/test/meetingroom/model/BookingDto.java
 src/main/java/com/test/meetingroom/model/BookingRequest.java
-src/main/java/com/test/meetingroom/model/MeetingRoom.java
+src/main/java/com/test/meetingroom/model/CreateBooking400Response.java
+src/main/java/com/test/meetingroom/model/ErrorResponse.java
+src/main/java/com/test/meetingroom/model/MeetingRoomDto.java
+src/main/java/com/test/meetingroom/model/ValidationError.java

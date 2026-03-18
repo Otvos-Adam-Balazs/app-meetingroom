@@ -26,6 +26,8 @@ public class BookingDto {
 
   private Integer roomId;
 
+  private String roomName;
+
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
   private OffsetDateTime startTime;
 
@@ -85,6 +87,26 @@ public class BookingDto {
     this.roomId = roomId;
   }
 
+  public BookingDto roomName(String roomName) {
+    this.roomName = roomName;
+    return this;
+  }
+
+  /**
+   * Get roomName
+   * @return roomName
+  */
+  
+  @Schema(name = "roomName", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("roomName")
+  public String getRoomName() {
+    return roomName;
+  }
+
+  public void setRoomName(String roomName) {
+    this.roomName = roomName;
+  }
+
   public BookingDto startTime(OffsetDateTime startTime) {
     this.startTime = startTime;
     return this;
@@ -136,13 +158,14 @@ public class BookingDto {
     BookingDto bookingDto = (BookingDto) o;
     return Objects.equals(this.id, bookingDto.id) &&
         Objects.equals(this.roomId, bookingDto.roomId) &&
+        Objects.equals(this.roomName, bookingDto.roomName) &&
         Objects.equals(this.startTime, bookingDto.startTime) &&
         Objects.equals(this.endTime, bookingDto.endTime);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, roomId, startTime, endTime);
+    return Objects.hash(id, roomId, roomName, startTime, endTime);
   }
 
   @Override
@@ -151,6 +174,7 @@ public class BookingDto {
     sb.append("class BookingDto {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    roomId: ").append(toIndentedString(roomId)).append("\n");
+    sb.append("    roomName: ").append(toIndentedString(roomName)).append("\n");
     sb.append("    startTime: ").append(toIndentedString(startTime)).append("\n");
     sb.append("    endTime: ").append(toIndentedString(endTime)).append("\n");
     sb.append("}");

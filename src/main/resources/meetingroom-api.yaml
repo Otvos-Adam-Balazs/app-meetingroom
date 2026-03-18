@@ -4,52 +4,75 @@ info:
   version: 1.0.0
 tags:
   - name: Booking
-    description: Booking stuff
+    description: Booking operations
   - name: Room
-    description: Room stuff
+    description: Room operations
 paths:
   /api/rooms:
     get:
-      summary: Listázza a tárgyalókat
+      summary: List meeting rooms
       tags: 
         - Room
       operationId: getRooms
       responses:
         '200':
-          description: Tárgyalók listája
+          description: List of meeting rooms
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/MeetingRoom'
+                  $ref: '#/components/schemas/MeetingRoomDto'
 
-  /api/admin/bookings:
+  /api/bookings:
     get:
-      summary: Listázza a foglalásokat
+      summary: List bookings by meeting room
       tags: 
         - Booking
-      operationId: bookings
+      operationId: getBookingsByMeetingRoom
       parameters:
         - in: query
           name: roomId
           schema:
             type: integer
           required: true
-          description: Szűrés tárgyaló szerint
+          description: Filter by meeting room
       responses:
         '200':
-          description: Foglalások listája
+          description: List of bookings
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/BookingDto'
-  
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ValidationError'
+  /api/admin/allBooking:
+      get:
+        summary: List bookings
+        tags: 
+          - Booking
+        operationId: getBookings
+        responses:
+          '200':
+            description: List of all bookings
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/BookingDto'
+
   /api/bookings/add:
     post:
-      summary: Új foglalás létrehozása
+      summary: Create a new booking
       tags: 
         - Booking
       operationId: createBooking
@@ -60,16 +83,30 @@ paths:
             schema:
               $ref: '#/components/schemas/BookingRequest'
       responses:
-        '200':
-          description: A létrehozott foglalás
+        '201':
+          description: The created booking
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/BookingDto'
+        '400':
+          description: Invalid input or validation error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ValidationError'
+                  - $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Booking conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /api/bookings/{id}:
     delete:
-      summary: Foglalás törlése
+      summary: Delete a booking
       tags:
         - Booking
       operationId: deleteBooking
@@ -81,12 +118,18 @@ paths:
             type: integer
             format: int32
       responses:
-        '204':
-          description: Sikeres törlés
+        '200':
+          description: Successfully deleted
+        '404':
+          description: Booking not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
 components:
   schemas:
-    MeetingRoom:
+    MeetingRoomDto:
       type: object
       properties:
         id:
@@ -103,6 +146,8 @@ components:
           type: integer
         roomId:
           type: integer
+        roomName:
+          type: string
         startTime:
           type: string
           format: date-time
@@ -115,14 +160,45 @@ components:
         - endTime
     BookingRequest:
       type: object
+      required:
+        - roomId
+        - startTime
+        - endTime
       properties:
-        id:
-          type: integer
         roomId:
           type: integer
         startTime:
           type: string
           format: date-time
+          example: "2026-03-18T10:00:00+01:00"
         endTime:
           type: string
           format: date-time
+          example: "2026-03-18T10:00:00+01:00"
+    ValidationError:
+      type: object
+      properties:
+        field:
+          type: string
+          description: The field name that failed validation
+        message:
+          type: string
+          description: Validation error message
+      required:
+        - field
+        - message
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        field:
+          type: string
+          description: Optional field name related to the error
+      required:
+        - code
+        - message

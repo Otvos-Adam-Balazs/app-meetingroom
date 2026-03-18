@@ -22,8 +22,6 @@ import jakarta.annotation.Generated;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 public class BookingRequest {
 
-  private Integer id;
-
   private Integer roomId;
 
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
@@ -32,24 +30,17 @@ public class BookingRequest {
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
   private OffsetDateTime endTime;
 
-  public BookingRequest id(Integer id) {
-    this.id = id;
-    return this;
+  public BookingRequest() {
+    super();
   }
 
   /**
-   * Get id
-   * @return id
-  */
-  
-  @Schema(name = "id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("id")
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
+   * Constructor with only required parameters
+   */
+  public BookingRequest(Integer roomId, OffsetDateTime startTime, OffsetDateTime endTime) {
+    this.roomId = roomId;
+    this.startTime = startTime;
+    this.endTime = endTime;
   }
 
   public BookingRequest roomId(Integer roomId) {
@@ -61,8 +52,8 @@ public class BookingRequest {
    * Get roomId
    * @return roomId
   */
-  
-  @Schema(name = "roomId", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull 
+  @Schema(name = "roomId", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("roomId")
   public Integer getRoomId() {
     return roomId;
@@ -81,8 +72,8 @@ public class BookingRequest {
    * Get startTime
    * @return startTime
   */
-  @Valid 
-  @Schema(name = "startTime", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "startTime", example = "2026-03-18T10:00+01:00", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("startTime")
   public OffsetDateTime getStartTime() {
     return startTime;
@@ -101,8 +92,8 @@ public class BookingRequest {
    * Get endTime
    * @return endTime
   */
-  @Valid 
-  @Schema(name = "endTime", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "endTime", example = "2026-03-18T10:00+01:00", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("endTime")
   public OffsetDateTime getEndTime() {
     return endTime;
@@ -121,22 +112,20 @@ public class BookingRequest {
       return false;
     }
     BookingRequest bookingRequest = (BookingRequest) o;
-    return Objects.equals(this.id, bookingRequest.id) &&
-        Objects.equals(this.roomId, bookingRequest.roomId) &&
+    return Objects.equals(this.roomId, bookingRequest.roomId) &&
         Objects.equals(this.startTime, bookingRequest.startTime) &&
         Objects.equals(this.endTime, bookingRequest.endTime);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, roomId, startTime, endTime);
+    return Objects.hash(roomId, startTime, endTime);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class BookingRequest {\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    roomId: ").append(toIndentedString(roomId)).append("\n");
     sb.append("    startTime: ").append(toIndentedString(startTime)).append("\n");
     sb.append("    endTime: ").append(toIndentedString(endTime)).append("\n");

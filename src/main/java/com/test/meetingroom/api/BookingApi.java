@@ -7,6 +7,9 @@ package com.test.meetingroom.api;
 
 import com.test.meetingroom.model.BookingDto;
 import com.test.meetingroom.model.BookingRequest;
+import com.test.meetingroom.model.CreateBooking400Response;
+import com.test.meetingroom.model.ErrorResponse;
+import com.test.meetingroom.model.ValidationError;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -31,7 +34,7 @@ import jakarta.annotation.Generated;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 @Validated
-@Tag(name = "Booking", description = "Booking stuff")
+@Tag(name = "Booking", description = "Booking operations")
 public interface BookingApi {
 
     default BookingApiDelegate getDelegate() {
@@ -39,46 +42,26 @@ public interface BookingApi {
     }
 
     /**
-     * GET /api/admin/bookings : Listázza a foglalásokat
-     *
-     * @param roomId Szűrés tárgyaló szerint (required)
-     * @return Foglalások listája (status code 200)
-     */
-    @Operation(
-        operationId = "bookings",
-        summary = "Listázza a foglalásokat",
-        tags = { "Booking" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "Foglalások listája", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = BookingDto.class)))
-            })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/api/admin/bookings",
-        produces = { "application/json" }
-    )
-    default ResponseEntity<List<BookingDto>> bookings(
-        @NotNull @Parameter(name = "roomId", description = "Szűrés tárgyaló szerint", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "roomId", required = true) Integer roomId
-    ) {
-        return getDelegate().bookings(roomId);
-    }
-
-
-    /**
-     * POST /api/bookings/add : Új foglalás létrehozása
+     * POST /api/bookings/add : Create a new booking
      *
      * @param bookingRequest  (required)
-     * @return A létrehozott foglalás (status code 200)
+     * @return The created booking (status code 201)
+     *         or Invalid input or validation error (status code 400)
+     *         or Booking conflict (status code 409)
      */
     @Operation(
         operationId = "createBooking",
-        summary = "Új foglalás létrehozása",
+        summary = "Create a new booking",
         tags = { "Booking" },
         responses = {
-            @ApiResponse(responseCode = "200", description = "A létrehozott foglalás", content = {
+            @ApiResponse(responseCode = "201", description = "The created booking", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = BookingDto.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "Invalid input or validation error", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = CreateBooking400Response.class))
+            }),
+            @ApiResponse(responseCode = "409", description = "Booking conflict", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             })
         }
     )
@@ -96,27 +79,91 @@ public interface BookingApi {
 
 
     /**
-     * DELETE /api/bookings/{id} : Foglalás törlése
+     * DELETE /api/bookings/{id} : Delete a booking
      *
      * @param id  (required)
-     * @return Sikeres törlés (status code 204)
+     * @return Successfully deleted (status code 200)
+     *         or Booking not found (status code 404)
      */
     @Operation(
         operationId = "deleteBooking",
-        summary = "Foglalás törlése",
+        summary = "Delete a booking",
         tags = { "Booking" },
         responses = {
-            @ApiResponse(responseCode = "204", description = "Sikeres törlés")
+            @ApiResponse(responseCode = "200", description = "Successfully deleted"),
+            @ApiResponse(responseCode = "404", description = "Booking not found", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            })
         }
     )
     @RequestMapping(
         method = RequestMethod.DELETE,
-        value = "/api/bookings/{id}"
+        value = "/api/bookings/{id}",
+        produces = { "application/json" }
     )
     default ResponseEntity<Void> deleteBooking(
         @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Integer id
     ) {
         return getDelegate().deleteBooking(id);
+    }
+
+
+    /**
+     * GET /api/admin/allBooking : List bookings
+     *
+     * @return List of all bookings (status code 200)
+     */
+    @Operation(
+        operationId = "getBookings",
+        summary = "List bookings",
+        tags = { "Booking" },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "List of all bookings", content = {
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = BookingDto.class)))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/api/admin/allBooking",
+        produces = { "application/json" }
+    )
+    default ResponseEntity<List<BookingDto>> getBookings(
+        
+    ) {
+        return getDelegate().getBookings();
+    }
+
+
+    /**
+     * GET /api/bookings : List bookings by meeting room
+     *
+     * @param roomId Filter by meeting room (required)
+     * @return List of bookings (status code 200)
+     *         or Validation error (status code 400)
+     */
+    @Operation(
+        operationId = "getBookingsByMeetingRoom",
+        summary = "List bookings by meeting room",
+        tags = { "Booking" },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "List of bookings", content = {
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = BookingDto.class)))
+            }),
+            @ApiResponse(responseCode = "400", description = "Validation error", content = {
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ValidationError.class)))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/api/bookings",
+        produces = { "application/json" }
+    )
+    default ResponseEntity<List<BookingDto>> getBookingsByMeetingRoom(
+        @NotNull @Parameter(name = "roomId", description = "Filter by meeting room", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "roomId", required = true) Integer roomId
+    ) {
+        return getDelegate().getBookingsByMeetingRoom(roomId);
     }
 
 }

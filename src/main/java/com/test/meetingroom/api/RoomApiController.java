@@ -1,6 +1,6 @@
 package com.test.meetingroom.api;
 
-import com.test.meetingroom.model.MeetingRoom;
+import com.test.meetingroom.model.MeetingRoomDto;
 
 
 import org.springframework.beans.factory.annotation.Autowired;

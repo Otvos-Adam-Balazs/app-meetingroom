@@ -5,7 +5,7 @@
  */
 package com.test.meetingroom.api;
 
-import com.test.meetingroom.model.MeetingRoom;
+import com.test.meetingroom.model.MeetingRoomDto;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -30,7 +30,7 @@ import jakarta.annotation.Generated;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 @Validated
-@Tag(name = "Room", description = "Room stuff")
+@Tag(name = "Room", description = "Room operations")
 public interface RoomApi {
 
     default RoomApiDelegate getDelegate() {
@@ -38,17 +38,17 @@ public interface RoomApi {
     }
 
     /**
-     * GET /api/rooms : Listázza a tárgyalókat
+     * GET /api/rooms : List meeting rooms
      *
-     * @return Tárgyalók listája (status code 200)
+     * @return List of meeting rooms (status code 200)
      */
     @Operation(
         operationId = "getRooms",
-        summary = "Listázza a tárgyalókat",
+        summary = "List meeting rooms",
         tags = { "Room" },
         responses = {
-            @ApiResponse(responseCode = "200", description = "Tárgyalók listája", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = MeetingRoom.class)))
+            @ApiResponse(responseCode = "200", description = "List of meeting rooms", content = {
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = MeetingRoomDto.class)))
             })
         }
     )
@@ -57,7 +57,7 @@ public interface RoomApi {
         value = "/api/rooms",
         produces = { "application/json" }
     )
-    default ResponseEntity<List<MeetingRoom>> getRooms(
+    default ResponseEntity<List<MeetingRoomDto>> getRooms(
         
     ) {
         return getDelegate().getRooms();

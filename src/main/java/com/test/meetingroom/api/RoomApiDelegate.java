@@ -1,6 +1,6 @@
 package com.test.meetingroom.api;
 
-import com.test.meetingroom.model.MeetingRoom;
+import com.test.meetingroom.model.MeetingRoomDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,12 +26,12 @@ public interface RoomApiDelegate {
     }
 
     /**
-     * GET /api/rooms : Listázza a tárgyalókat
+     * GET /api/rooms : List meeting rooms
      *
-     * @return Tárgyalók listája (status code 200)
+     * @return List of meeting rooms (status code 200)
      * @see RoomApi#getRooms
      */
-    default ResponseEntity<List<MeetingRoom>> getRooms() {
+    default ResponseEntity<List<MeetingRoomDto>> getRooms() {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

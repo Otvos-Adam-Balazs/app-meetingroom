@@ -11,6 +11,10 @@ import com.test.meetingroom.entity.MeetingRoom;
 import com.test.meetingroom.model.BookingRequest;
 import com.test.meetingroom.repository.BookingRepository;
 
+/**
+ * Service class for managing meeting room bookings. Provides methods to create, retrieve, and
+ * delete bookings.
+ */
 @Service
 public class BookingService {
 
@@ -21,6 +25,15 @@ public class BookingService {
 
   public BookingService() {}
 
+  /**
+   * Creates a new booking for a meeting room.
+   *
+   * @param bookingRequest the booking request containing room ID, start time, and end time
+   * @return the saved {@link Booking} object
+   * @throws NullPointerException if bookingRequest or its required fields are null
+   * @throws BookingDataException if the start and end times are invalid
+   * @throws BookingConflictException if the requested time overlaps with an existing booking
+   */
   public Booking createBooking(BookingRequest bookingRequest) {
 
     Objects.requireNonNull(bookingRequest, "bookingRequest cant be null!");
@@ -48,19 +61,34 @@ public class BookingService {
     Booking booking = new Booking(meetingRoomById, bookingRequest.getStartTime(),
         bookingRequest.getEndTime());
     return repository.save(booking);
-
   }
 
+  /**
+   * Deletes a booking by its ID.
+   *
+   * @param bookingId the ID of the booking to delete
+   * @throws NullPointerException if bookingId is null
+   */
   public void deleteBooking(Integer bookingId) {
     Objects.requireNonNull(bookingId, "bookingId cant be null!");
     repository.deleteById(bookingId);
   }
 
+  /**
+   * Retrieves all bookings for a specific meeting room.
+   *
+   * @param roomId the ID of the meeting room
+   * @return a list of {@link Booking} objects for the specified room
+   */
   public List<Booking> getBookingsByMeetingRoomId(Integer roomId) {
     return repository.findBookingsByMeetingRoomId(roomId);
   }
 
-
+  /**
+   * Retrieves all bookings.
+   *
+   * @return a list of all {@link Booking} objects
+   */
   public List<Booking> getBookings() {
     return repository.findBookings();
   }

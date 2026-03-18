@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
       final WebRequest request) {
 
     return ResponseEntity.internalServerError()
-        .body(new ErrorResponse("something went wrong!", e.getMessage()));
+        .body(new ErrorResponse("SOMETHING_WENT_WRONG", e.getMessage()));
   }
 
   @ExceptionHandler(HttpMessageNotReadableException.class)

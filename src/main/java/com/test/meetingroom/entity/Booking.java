@@ -1,7 +1,6 @@
 package com.test.meetingroom.entity;
 
 import java.time.OffsetDateTime;
-import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,17 +21,14 @@ public class Booking {
 
   @ManyToOne
   @JoinColumn(name = "room_id", nullable = false)
-  @NotNull
   private MeetingRoom room;
 
   @NotNull
   @Column(nullable = false)
-  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
   private OffsetDateTime startTime;
 
   @NotNull
   @Column(nullable = false)
-  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
   private OffsetDateTime endTime;
 
   public Booking() {}

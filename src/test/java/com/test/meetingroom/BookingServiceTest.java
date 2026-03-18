@@ -128,4 +128,24 @@ class BookingServiceTest {
 
     assertEquals(bookingService.getBookings().size(), 4);
   }
+
+  @Test
+  @Order(7)
+  void tesBookingWithNullValues() {
+
+    assertThrows(NullPointerException.class, () -> bookingService.createBooking(
+        new BookingRequest().roomId(null)
+            .startTime(OffsetDateTime.of(LocalDateTime.of(2026, 4, 1, 8, 0), ZoneOffset.UTC))
+            .endTime(OffsetDateTime.of(LocalDateTime.of(2026, 4, 1, 12, 0), ZoneOffset.UTC))));
+
+    assertThrows(NullPointerException.class, () -> bookingService.createBooking(
+        new BookingRequest().roomId(5)
+            .startTime(null)
+            .endTime(OffsetDateTime.of(LocalDateTime.of(2026, 4, 1, 12, 0), ZoneOffset.UTC))));
+
+    assertThrows(NullPointerException.class, () -> bookingService.createBooking(
+        new BookingRequest().roomId(5)
+            .startTime(OffsetDateTime.of(LocalDateTime.of(2026, 4, 1, 8, 0), ZoneOffset.UTC))
+            .endTime(null)));
+  }
 }

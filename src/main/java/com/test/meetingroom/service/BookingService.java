@@ -1,5 +1,7 @@
 package com.test.meetingroom.service;
 
+import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,13 @@ public class BookingService {
     Objects.requireNonNull(bookingRequest.getStartTime(), "startTime cant be null!");
     Objects.requireNonNull(bookingRequest.getEndTime(), "endTime cant be null!");
 
+    bookingRequest.endTime(bookingRequest.getEndTime().truncatedTo(ChronoUnit.SECONDS));
+    bookingRequest.startTime(bookingRequest.getStartTime().truncatedTo(ChronoUnit.SECONDS));
+
+    if (bookingRequest.getStartTime().isBefore(OffsetDateTime.now())) {
+      throw new BookingDataException("Start time cannot be in the past");
+    }
+
     if (bookingRequest.getStartTime().isEqual(bookingRequest.getEndTime())) {
       throw new BookingDataException("Start and end time cannot be the same");
     }
@@ -51,10 +60,10 @@ public class BookingService {
 
     MeetingRoom meetingRoomById = roomService.getMeetingRoomById(bookingRequest.getRoomId());
 
-    boolean existsOverlappingBooking = repository.existsOverlappingBooking(
+    List<Booking> existsOverlappingBookings = repository.existsOverlappingBooking(
         meetingRoomById.getId(), bookingRequest.getEndTime(), bookingRequest.getStartTime());
 
-    if (existsOverlappingBooking) {
+    if (!existsOverlappingBookings.isEmpty()) {
       throw new BookingConflictException("Booking time conflicts with existing booking");
     }
 
